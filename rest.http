@@ -8,7 +8,7 @@ Content-Type: application/json
 
 #Body of the request, there should be gap between header and body
 {
-    "task": "playing",
+    "task": "watching",
     "hr": 40,
     "type": "entry"
 }
@@ -20,8 +20,9 @@ Content-Type: application/json
 
 #Body of the request, there should be gap between header and body
 {
-   "type": "bad",
-      "id": "sfAlJv"
+      "_id": "6625a436303cdc679035750d",
+   "type": "bad"
+      
 }
 
 ### delete data
@@ -32,5 +33,5 @@ Content-Type: application/json
 #Body of the request, there should be gap between header and body
 {
  
-      "id": "sfAlJv"
+      "id": "6625a436303cdc679035750d"
 }

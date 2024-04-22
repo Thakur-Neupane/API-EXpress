@@ -1,6 +1,7 @@
 import express from "express";
-import { idGenerator } from "../utils.js";
-import { insertTask } from "../models/task/TaskModel.js";
+// import { idGenerator } from "../utils.js";
+import { deleteTask, getTasks, insertTask,updateTask } from "../models/task/TaskModel.js";
+
 const router = express.Router();
 
 let fakeDb = [];
@@ -8,9 +9,14 @@ let fakeDb = [];
 //controllers
 
 //get data
-router.get("/", (req, res) => {
+// db queries to get the data
+router.get("/", async(req, res) => {
+const tasks=await getTasks();
+console.log(tasks);
+
   res.json({
     message: "Here are the tasks",
+    tasks,
   });
 });
 
@@ -33,29 +39,52 @@ router.post("/", async (req, res) => {
 });
 
 //update task
-router.patch("/", (req, res) => {
-  const { id, type } = req.body;
-  console.log(id, type);
-  fakeDb = fakeDb.map((item) => {
-    if (item.id === id) {
-      return { ...item, type }; // item.type == type
-    }
-    return item;
-  });
-
-  res.json({
+router.patch("/", async(req, res) => {
+  try {
+    const result = await updateTask(req.body);
+  console.log(result);
+  result?._id ? res.json({
     messaeg: "Your task has been updated",
-  });
+  })
+  :res.json({
+    message:"No change made may be Invalid db request",
+  })
+  } catch (error) {
+console.log(error);
+res.status(500).json({
+  
+  message:"Something went wrong try again later"
 });
+
+  
+  };
+  });
 //delete task
-router.delete("/", (req, res) => {
-  const { id } = req.body;
+router.delete("/",async (req, res) => {
+  try {
+    const { _id } = req.body;
 
-  fakeDb = fakeDb.filter((item) => item.id !== id);
-
-  res.json({
-    messaeg: "Your task has been updated",
-  });
+    const result= await deleteTask(_id)
+    result?._id
+    ?
+   
+     res.json({
+       messaeg: "Your task has been deleted",
+     })
+     :res.json({
+       message: "Unable to delete try again later"
+     })
+   
+  } catch (error) {
+    console.log(error);
+res.status(500).json({
+  
+  message:"Something went wrong try again later"
 });
+
+  
+};
+});
+ 
 
 export default router;

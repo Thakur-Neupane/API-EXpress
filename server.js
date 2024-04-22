@@ -1,12 +1,13 @@
 import express from "express";
 const app = express();
 import morgan from "morgan";
+import mongoose from "mongoose";
 
 const PORT = process.env.PORT || 8000;
 
 //connect mongodb
 
-import { connectMongo } from "./src/config/mongoDbConfig.js";
+import { connectMongo } from "./src/routers/config/mongoDbconfig.js";
 connectMongo();
 
 // middlewares
